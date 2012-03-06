@@ -653,8 +653,9 @@ public class SerializerFactory extends AbstractSerializerFactory
     if (deserializer != null)
       return deserializer;
 
-    if (type.startsWith("[")) {
-      Deserializer subDeserializer = getDeserializer(type.substring(1));
+    if (type.startsWith("[") || type.endsWith("[]")) {
+        String arrayItemType = type.startsWith("[") ? type.substring(1) : type.substring(0, type.length() - 2);
+        Deserializer subDeserializer = getDeserializer(arrayItemType);
 
       if (subDeserializer != null)
         deserializer = new ArrayDeserializer(subDeserializer.getType());
